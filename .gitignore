@@ -1,32 +1,51 @@
-# Prerequisites
-*.d
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <limits.h>
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+using namespace std;
 
-# Precompiled Headers
-*.gch
-*.pch
+int enFazlaGorulenEnDusukID(const vector<int>& dizi) {
+    // Tür sayımlarını tutmak için bir harita oluşturuyoruz
+    unordered_map<int, int> sayim;
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+    // Her türü sayıyoruz
+    for (int id : dizi) {
+        sayim[id]++;
+    }
 
-# Fortran module files
-*.mod
-*.smod
+    // En fazla sayıda gözlemlenen türleri ve sayısını buluyoruz
+    int maxSayim = 0;
+    for (const auto& p : sayim) {
+        if (p.second > maxSayim) {
+            maxSayim = p.second;
+        }
+    }
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+    // En fazla sayıda gözlemlenen türler arasında en düşük ID'yi buluyoruz
+    int enDusukID = INT_MAX;
+    for (const auto& p : sayim) {
+        if (p.second == maxSayim && p.first < enDusukID) {
+            enDusukID = p.first;
+        }
+    }
 
-# Executables
-*.exe
-*.out
-*.app
+    return enDusukID;
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<int> dizi(n);
+    for (int i = 0; i < n; ++i) {
+        char ch;
+        cin >> ch;
+        dizi[i] = ch - '0';  // Karakteri tamsayıya çeviriyoruz
+    }
+
+    int sonuc = enFazlaGorulenEnDusukID(dizi);
+    cout << sonuc << endl;
+
+    return 0;
+}
